@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+""" Read serial data from the BNO055 sensor and displays it in real time.
+
+  - Original code from: https://thepoorengineer.com/en/arduino-python-plot/#python
+     + Modified to include multiple subplots 
+     + [TODO] Modified to include the BNO055 calibration sensors
+"""
+
 from threading import Thread
 import serial
 import time

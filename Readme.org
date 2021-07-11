@@ -33,6 +33,7 @@ the documentation.
     - [[https://www.youtube.com/watch?v=2AO_Gmh5K3Q][9-axis IMU Lesson]] by Paul McWorther, for how to set-up the hardware and an introduction
       to tilt detection in very basic terms.
     - [[https://thepoorengineer.com/en/attitude-determination/][The poor engineer blog]]. For the Attitude detection and implementation of the Kalman filter.
+      Also get a good reference for [[https://thepoorengineer.com/en/arduino-python-plot/#python][plotting Arduino data with Python in real time]].
     - [[file:notes/adafruit-bno055-absolute-orientation-sensor.pdf][Adafruit BNO055]], for a reference to the Adafruit API and how to connect the sensor.
     - [[file:notes/bst-bno055-ds000.pdf][BNO055 Datasheet]], for the datasheet of the BNO055 sensor. This will be mostly not required
       since the Adafruit driver abstracts most of the complexity.
