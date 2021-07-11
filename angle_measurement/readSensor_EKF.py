@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+""" Read serial data from the BNO055 sensor.
+
+  - Original code from: https://thepoorengineer.com/wp-content/uploads/2018/09/PythonIMU_EKF.zip
+     + Modified for the BNO055
+     + Added calibration data
+"""
+
 from threading import Thread
 import serial
 import time
@@ -47,36 +54,8 @@ class SerialRead:
         privateData = self.rawData[:]
         fmt = "9f4b"
         self.data = np.array(list(struct.unpack("9f", self.rawData[:36])))
-
-        
-        self.data[2::3] = -self.data[2::3]
-        
         self.cal = list(struct.unpack("4b", self.rawData[36:40]))
         
-        """
-        for i in range(self.numParams):
-            data = privateData[(i*self.dataNumBytes):(self.dataNumBytes + i*self.dataNumBytes)]
-            value,  = struct.unpack(self.dataType, data)
-            if i == 0:
-                value = ((value * 0.00875) - 0.464874541896) / 180.0 * np.pi
-            elif i == 1:
-                value = ((value * 0.00875) - 9.04805461852) / 180.0 * np.pi
-            elif i == 2:
-                value = ((value * 0.00875) + 0.23642053973) / 180.0 * np.pi
-            elif i == 3:
-                value = (value * 0.061) - 48.9882695319
-            elif i == 4:
-                value = (value * 0.061) - 58.9882695319
-            elif i == 5:
-                value = (value * 0.061) - 75.9732905214
-            elif i == 6:
-                value = value * 0.080
-            elif i == 7:
-                value = value * 0.080
-            elif i == 8:
-                value = value * 0.080
-            self.data[i] = value
-        """
         return (self.data, self.cal)
 
     def backgroundThread(self):    # retrieve data

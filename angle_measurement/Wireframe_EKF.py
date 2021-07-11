@@ -1,6 +1,11 @@
 import Kalman_EKF as km
 import numpy as np
 
+""" Wireframes with projection for 3D visualization
+
+  - Original code from: https://thepoorengineer.com/wp-content/uploads/2018/09/PythonIMU_EKF.zip
+"""
+
 # Node stores each point of the block
 class Node:
     def __init__(self, coordinates, color):

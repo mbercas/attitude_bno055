@@ -1,5 +1,10 @@
 import numpy as np
 
+""" Extended Kalman filter for attitude detection.
+
+  - Original code from: https://thepoorengineer.com/wp-content/uploads/2018/09/PythonIMU_EKF.zip
+  - Mostly unmodified
+"""
 
 def rad2deg(rad):
     return rad / np.pi * 180

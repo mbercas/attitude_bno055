@@ -3,6 +3,12 @@ import pygame
 from operator import itemgetter
 import readSensor_EKF as rs
 
+""" Pygame visualization for IMU
+
+  - Original code from: https://thepoorengineer.com/wp-content/uploads/2018/09/PythonIMU_EKF.zip
+  - Add indicators for the calibration status
+"""
+
 class ProjectionViewer:
     """ Displays 3D objects on a Pygame screen """
     def __init__(self, width, height, wireframe):
