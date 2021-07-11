@@ -4,7 +4,7 @@
 
   - Original code from: https://thepoorengineer.com/en/arduino-python-plot/#python
      + Modified to include multiple subplots 
-     + [TODO] Modified to include the BNO055 calibration sensors
+     + Modified to include the BNO055 sensor calibration flags
 """
 
 from threading import Thread
@@ -50,7 +50,7 @@ class serialPlot:
             while self.isReceiving != True:
                 time.sleep(0.1)
 
-    def getSerialData(self, frame, lines, lineValueText, lineLabel, timeText):
+    def getSerialData(self, frame, lines, rects, lineValueText, lineLabel, timeText):
         currentTimer = time.perf_counter()
         self.plotTimer = int((currentTimer - self.previousTimer) * 1000)     # the first reading will be erroneous
         self.previousTimer = currentTimer
@@ -59,7 +59,7 @@ class serialPlot:
         (gyroX, gyroY, gyroZ,
          accX, accY, accZ,
          magX, magY, magZ,
-         accCal, gyroCal, magCal, sysCal
+         sysCal, gyroCal, accCal, magCal,
          ) = struct.unpack('9f4b', self.rawData)
         
         data = [gyroX, gyroY, gyroZ, accX, accY, accZ, magX, magY, magZ]
@@ -68,6 +68,9 @@ class serialPlot:
             self.data[i].append(data[i])    # we get the latest data point and append it to our array
             lines[i].set_data(range(self.plotMaxLength), self.data[i])
             lineValueText[i].set_text('[' + lineLabel[i%3] + '] = ' + str(data[i]))
+
+        for i, h in enumerate([sysCal, gyroCal, accCal, magCal]):
+            rects[i].set_height(h)
         # self.csvData.append(self.data[-1])
 
     def backgroundThread(self):    # retrieve data
@@ -106,11 +109,11 @@ def main():
     style = ['r-', 'y-', 'z-']
     lineLabel = ['X', 'Y', 'Z']
 
-    fig = plt.figure(figsize=(12,10))
+    fig = plt.figure(figsize=(13, 10))
     
     #ax = plt.axes(xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
     
-    ax = plt.subplot(311, xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
+    ax = plt.subplot(411, xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
     ax.set_title('Gyro')
     #ax.set_xlabel("time")
     ax.set_ylabel("rad/sec")
@@ -126,7 +129,7 @@ def main():
     ymax = 5
 
         
-    ax = plt.subplot(312, xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
+    ax = plt.subplot(412, xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
     ax.set_title('Accelerometer')
     #ax.set_xlabel("time")
     ax.set_ylabel("g")
@@ -138,7 +141,7 @@ def main():
     ymin = -(50)
     ymax = 50
     
-    ax = plt.subplot(313, xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
+    ax = plt.subplot(413, xlim=(xmin, xmax), ylim=(float(ymin - (ymax - ymin) / 10), float(ymax + (ymax - ymin) / 10)))
     ax.set_title('Magnetometer')
     ax.set_xlabel("time")
     ax.set_ylabel("uT")
@@ -147,11 +150,14 @@ def main():
         lines.append(ax.plot([], [], label=lineLabel[i])[0])
         lineValueText.append(ax.text(0.70, 0.90-i*0.05, '', transform=ax.transAxes))
 
-        
-
-    anim = animation.FuncAnimation(fig, s.getSerialData, fargs=(lines, lineValueText, lineLabel, timeText), interval=pltInterval)    # fargs has to be a tuple
-
     plt.legend(loc="upper left")
+        
+    ax = plt.subplot(414,  ylim=(0, 4))
+    rects = plt.bar(range(4), 3, tick_label=['SysCal', 'GyroCal', 'AccCal', 'MagCal'])
+
+    anim = animation.FuncAnimation(fig, s.getSerialData, fargs=(lines, rects, lineValueText, lineLabel, timeText), interval=pltInterval)    # fargs has to be a tuple
+
+
     plt.show()
 
     s.close()
