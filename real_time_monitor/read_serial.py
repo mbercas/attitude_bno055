@@ -7,6 +7,7 @@
      + Modified to include the BNO055 sensor calibration flags
 """
 
+import platform
 from threading import Thread
 import serial
 import time
@@ -91,8 +92,12 @@ class serialPlot:
 
 
 def main():
-    # portName = 'COM5'     # for windows users
-    portName = '/dev/ttyUSB0'
+
+    running_os = platform.system()
+    if running_os == 'Windows':
+        portName = 'COM9' 
+    else:
+        portName = '/dev/ttyUSB0'
     baudRate = 115200
     maxPlotLength = 100
     dataNumBytes =  4+3*4*3       # calibration data + 9 floats
