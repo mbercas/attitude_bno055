@@ -23,10 +23,15 @@ For this project I am using an Arduino Pico with ATmega 328P processor and a Blu
 For the Arduino project I have added the Adafruit BNO055 library, which by default added also
 the Adafruit Unified Sensor.
 
+#+CAPTION: Hardware setup, Nano + BlueDot BNO055
+[[./notes/hw_setup.png]]
+
 Since it is complex (and very hackish) to get the USB serial data  WSL2 system for this project
 I am using a Linux Fedora 34 box, all required packages (Arduino, Python) installed from the standard
 repositories. As work environment I am using Emacs, Python mode and Arduino mode and Org mode for
 the documentation.
+
+
 
 ** References
 
