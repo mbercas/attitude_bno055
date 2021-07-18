@@ -50,3 +50,17 @@ uses this in the context of data analysis, but for us it will be the same.
 The real time monitor is a simple tool to monitor the sensor data in real time. It is written
 in Python using Matplotlib, a thread reading the serial console to get the data from the sensor
 and updating the "Line" content of the plots with the latest data.
+
+* Simple tilt measurement
+When the board is flat over the table the $\vec{G}$ vector of gravity points in the direction of
+the *Z* axis. If we consider just the tilt on the *X* axis (i.e. the rotation over *Y*)
+assuming there is not rotation on the other two axis we can get it directly from the
+expression of the  $\vec{G}$ vector relative to the coordinate system of the sensor.
+
+ - $\theta = atan({ \sqrt{g_x^2 + g_z^2} \over g_y})$
+ - $\phi = atan( {g_z \over g_x})$
+
+When the board rests on the table $\theta$ and $\phi$ should be close to 90 degrees.
+
+#+CAPTION: Angle estimation values with static and flat board
+[[./notes/angle_estimation_static_flat_png.png]]
